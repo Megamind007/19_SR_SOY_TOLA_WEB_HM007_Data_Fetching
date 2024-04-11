@@ -1,10 +1,21 @@
 import NavbarComponent from "@/components/NavbarComponent";
 import { getMovieById } from "@/service/movie-service";
 import React from "react";
+import { FaStar } from "react-icons/fa";
 
 const MoiveDetail = async ({ params }) => {
   const data = await getMovieById(params.mId);
   const date = new Date(data.payload.posted_at);
+  const rate = data.payload.rating;
+  //console.log("Rate : ", rate);
+  const starTotal = 5;
+  const fullStars = Math.floor((rate / 10) * starTotal);
+  // console.log("Full Star : ", fullStars);
+  const stars = [];
+
+  for (var i = 0; i < fullStars; i++) {
+    stars.push(<FaStar />);
+  }
 
   return (
     <div className="bg-red-950 h-screen">
@@ -35,7 +46,9 @@ const MoiveDetail = async ({ params }) => {
               {` minutes`}
             </p>
             <p className="italic font-sans">{data.payload.genre}</p>
-            <p>{data.payload.rating}</p>
+            {/* Star */}
+            <div className="flex text-orange-400 pt-1 ">{stars}</div>
+            {/* <p>{data.payload.rating}</p> */}
           </div>
           <div className="text-white pt-10">
             <h2 className="card-title line-clamp-1 text-2xl font-bold">
